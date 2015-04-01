@@ -6,12 +6,11 @@ def update():
     local('rm jquery-ui.min.css')
     local('rm jquery-ui.min.js')
     local('rm -rf images')
+    local('bower install jquery-ui')
+    local('cp bower_components/jquery-ui/jquery-ui.min.js .')
+    local('cp bower_components/jquery-ui/themes/base/jquery-ui.min.css .')
+    local('cp -r bower_components/jquery-ui/themes/base/images .')
+    local('rm -rf bower_components')
     output = Popen(["bower", "info", "jquery-ui"], stdout = PIPE).communicate()[0]
     latest_version = re.findall(r"version: '([1-9]\.\d+\.\d+)',", output)[0]
-    local('wget http://jqueryui.com/resources/download/jquery-ui-{0}.zip'.format(latest_version))
-    local('unzip jquery-ui-{0}.zip && rm jquery-ui-{0}.zip'.format(latest_version))
-    local('cp jquery-ui-{0}/jquery-ui.min.css .'.format(latest_version))
-    local('cp jquery-ui-{0}/jquery-ui.min.js .'.format(latest_version))
-    local('cp -r jquery-ui-{0}/images .'.format(latest_version))
-    local('rm -rf jquery-ui-{0}'.format(latest_version))
     print('latest version: {0}'.format(latest_version))
